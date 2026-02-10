@@ -1,0 +1,28 @@
+# Terraform state and backup files
+*.tfstate
+*.tfstate.*
+crash.log
+# *.tfvars  - just to prood of concept, in real project we should not ignore tfvars as it contains variables values...
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive files
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Python virtualenv
+venv/
+__pycache__/
