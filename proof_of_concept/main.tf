@@ -47,7 +47,7 @@ resource "aws_s3_bucket" "telemetry" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "telemetry" {
   bucket = aws_s3_bucket.telemetry.id
-  rules {
+  rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
