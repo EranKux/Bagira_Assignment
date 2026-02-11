@@ -47,7 +47,7 @@ resource "aws_s3_bucket" "telemetry" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "telemetry" {
   bucket = aws_s3_bucket.telemetry.id
-  rule {
+  rules {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
@@ -99,4 +99,24 @@ resource "aws_iam_policy" "ingestion_secret_access" {
 resource "aws_iam_role_policy_attachment" "ingestion_secret_access" {
   role       = aws_iam_role.ingestion_service.name
   policy_arn = aws_iam_policy.ingestion_secret_access.arn
+}
+
+data "aws_iam_policy_document" "ingestion_s3_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = ["${aws_s3_bucket.telemetry.arn}/*"]
+  }
+}
+
+resource "aws_iam_policy" "ingestion_s3_access" {
+  name   = "IngestionS3AccessPolicy"
+  policy = data.aws_iam_policy_document.ingestion_s3_access.json
+}
+
+resource "aws_iam_role_policy_attachment" "ingestion_s3_access" {
+  role       = aws_iam_role.ingestion_service.name
+  policy_arn = aws_iam_policy.ingestion_s3_access.arn
 }
